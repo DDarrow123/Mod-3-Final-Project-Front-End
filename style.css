@@ -1,3 +1,7 @@
+#create-user {
+  text-align: center;
+}
+
 #card-container {
   display: flex;
   /* grid-template-columns: 1fr;
@@ -9,13 +13,12 @@
 
 #collections-container {
   display: flex;
-
 }
 
 
 .card{
   background-color: #eeeeee;
-  height: 600px;
+  height: auto;
   width: 400px;
   box-shadow: 10px 10px grey;
   padding: 10px;
@@ -37,4 +40,22 @@
 
 .comment-button {
   margin-top: 10px;
+}
+
+.card-form-container {
+  margin-top: 20px;
+  padding: 1rem;
+  /* height: auto; */
+  display: none;
+  background: #515DA2;
+  opacity: .8;
+  box-shadow: 10px 10px grey;
+  border-radius: 10px;
+  /* text-align: center; */
+  width: auto;
+  height: 100px;
+}
+
+.comment-box{
+  margin-left: 20px;
 }

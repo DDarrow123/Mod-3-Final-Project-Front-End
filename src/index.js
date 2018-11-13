@@ -2,8 +2,9 @@ let collections = []
 let card = []
 let collectionsContainer = document.querySelector('#collections-container')
 let cardContainer = document.querySelector('#card-container')
+let firstCardContainer = document.querySelector('#first-container')
 let addCommentForm = false
-const commentForm = document.querySelector('.card-form-container')
+let postComment = []
 
 //fetching links
 const cardUrl = `http://localhost:3000/api/v1/cards`
@@ -11,11 +12,10 @@ const collectionUrl = `http://localhost:3000/api/v1/collections`
 const commentUrl = `http://localhost:3000/api/v1/comments`
 const userUrl = `http://localhost:3000/api/v1/users`
 
-
 fetch(collectionUrl)
 .then(res => res.json())
 .then((parsedResponse) => {
-  console.log(parsedResponse)
+  // console.log(parsedResponse)
   collections = parsedResponse
   addCollectionsToDom(collections)
 })
@@ -31,12 +31,13 @@ function singleCollectionToPage(collection){
     <h2 class="collection-designer">Designer: ${collection.designer}</h2>
     <h3 class="collection-season">Season: ${collection.season}</h3>
     <h4 class="collection-brand">Brand: ${collection.brand}</h4>
+    <div></div>
   </div>`
   // if ()
 }
 
 collectionsContainer.addEventListener('click', (event) => {
-  // debugger
+
   let collectionId = event.target.dataset.id
   // console.log(event.target.dataset.id)
   if (event.target.className === 'collection-header'){
@@ -54,7 +55,20 @@ collectionsContainer.addEventListener('click', (event) => {
         <div>
         <button type="button" name="comment-button" class="comment-button">Leave a Comment</button>
         </div>
-      </div>`
+
+      <div class="card-form-container">
+        <form class="add-comment-form">
+          <h3>Add a comment!</h3>
+          <input id="input_comment" type="text" name="comment" value="" placeholder="Enter a comment about this look..." class="input-text"  data-id="${card.id}">
+          <br>
+          <input type="submit" id="submit-comment" name="submit" value="Create New Comment" class="submit">
+        </form>
+      </div>
+
+
+      <div class="comment-box">
+      </div>
+      `
      // })
    })
   }
@@ -62,7 +76,7 @@ collectionsContainer.addEventListener('click', (event) => {
 
   cardContainer.addEventListener('click', (event) => {
     let likeId = event.target.dataset.id
-    if (event.target.className === 'likes'){
+  if (event.target.className === 'likes'){
     let postedLikes = card.likes + 1
     fetch(cardUrl + `/${likeId}`, {
       method: 'PATCH',
@@ -81,30 +95,56 @@ collectionsContainer.addEventListener('click', (event) => {
         card.likes = postedLikes
     })
   } else if (event.target.className === 'comment-button'){
-      let clickedButton = event.target.className
-    // hide & seek with the form
-      console.log(addCommentForm)
-      addCommentForm = !addCommentForm
-      console.log(addCommentForm)
-    if (addCommentForm) {
-      commentForm.style.display = 'block'
-      // submit listener here
-    } else {
-      commentForm.style.display = 'none'
-      }
+    commentForm = event.target.parentElement.parentElement.parentElement.querySelector('.card-form-container')
+    toggleCommentForm()
     }
  })
 
-  //   postClickedButton.addEventListener('click', () => {
-  // // hide & seek with the form
-  //   addCommentForm = !addCommentForm
-  // if (addCommentForm) {
-  //   commentForm.style.display = 'block'
-  //   // submit listener here
-  // } else {
-  //   commentForm.style.display = 'none'
-  //   }
-  // })
+   function toggleCommentForm(){
+   let clickedButton = event.target.className
+   // console.log(addCommentForm)
+   addCommentForm = !addCommentForm
+   // console.log(addCommentForm)
+  if (addCommentForm) {
+   commentForm.style.display = 'block'
+
+  commentForm.addEventListener('submit', (event) => {
+    event.preventDefault()
+    //variables//
+  let commentCardId = event.target.querySelector('#input_comment').dataset.id
+  let userInput = event.target.querySelector('#input_comment').value
+  let submitCommentButton = commentForm.querySelector('#submit-comment')
+  let cardDiv = event.target.parentElement.parentElement.parentElement.querySelector('.comment-box')
+   //end variables//
+   // debugger
+   fetch(commentUrl, {
+     method: 'POST',
+     headers:
+       {
+         "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify({
+          "content": userInput,
+          "card_id": commentCardId,
+          "user_id": 1
+        })
+   })
+   .then(res => res.json())
+   .then((parsedResponse) => {
+     postComment = parsedResponse
+     cardDiv.innerHTML =
+     `<div>${postComment.content}</div>`
+   })
+ })//end comment form event listener
+
+} else {
+   commentForm.style.display = 'none'
+   }
+ } // end of func
+
+
+
+
 
 
 
