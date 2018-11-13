@@ -1,13 +1,16 @@
-// console.log('hello!')
-
 let collections = []
 let card = []
 let collectionsContainer = document.querySelector('#collections-container')
 let cardContainer = document.querySelector('#card-container')
+let addCommentForm = false
+const commentForm = document.querySelector('.card-form-container')
+
+//fetching links
 const cardUrl = `http://localhost:3000/api/v1/cards`
 const collectionUrl = `http://localhost:3000/api/v1/collections`
 const commentUrl = `http://localhost:3000/api/v1/comments`
 const userUrl = `http://localhost:3000/api/v1/users`
+
 
 fetch(collectionUrl)
 .then(res => res.json())
@@ -24,7 +27,6 @@ collections.forEach((collection) =>{
 }  //end of func
 
 function singleCollectionToPage(collection){
-
   return `<div class="collection-header" data-id=${collection.id}>Collection
     <h2 class="collection-designer">Designer: ${collection.designer}</h2>
     <h3 class="collection-season">Season: ${collection.season}</h3>
@@ -43,20 +45,78 @@ collectionsContainer.addEventListener('click', (event) => {
     .then((parsedResponse) => {
       card = parsedResponse
       console.log(parsedResponse)
-        // cards.forEach((card) =>{
-      // let htmlStr = ''
-      console.log(cardContainer)
     cardContainer.innerHTML =
       `<div class="card" data-id="${card.id}">
         <img class="image-rendered" src="${card.image}" alt="fashion look image">
-        <h4>Likes: ${card.likes}</h4>
         <p>${card.details}</p>
+        <h4 data-id="${card.id}" class="likes">Likes: ${card.likes}</h4>
         <span data-id=${card.collection_id}>Test</span>
+        <div>
+        <button type="button" name="comment-button" class="comment-button">Leave a Comment</button>
+        </div>
       </div>`
      // })
    })
   }
 })
+
+  cardContainer.addEventListener('click', (event) => {
+    let likeId = event.target.dataset.id
+    if (event.target.className === 'likes'){
+    let postedLikes = card.likes + 1
+    fetch(cardUrl + `/${likeId}`, {
+      method: 'PATCH',
+      headers:
+        {
+          "Content-Type": "application/json; charset=utf-8"
+         },
+      body: JSON.stringify({
+        "likes" :postedLikes
+      })
+    })
+    .then(res => res.json())
+    .then((parsedResponse) => {
+      event.target.parentElement.querySelector('.likes').innerHTML = "Likes: " + postedLikes
+      //card is the original JSON data that is saved in an array assigned to this global variable card
+        card.likes = postedLikes
+    })
+  } else if (event.target.className === 'comment-button'){
+      let clickedButton = event.target.className
+    // hide & seek with the form
+      console.log(addCommentForm)
+      addCommentForm = !addCommentForm
+      console.log(addCommentForm)
+    if (addCommentForm) {
+      commentForm.style.display = 'block'
+      // submit listener here
+    } else {
+      commentForm.style.display = 'none'
+      }
+    }
+ })
+
+  //   postClickedButton.addEventListener('click', () => {
+  // // hide & seek with the form
+  //   addCommentForm = !addCommentForm
+  // if (addCommentForm) {
+  //   commentForm.style.display = 'block'
+  //   // submit listener here
+  // } else {
+  //   commentForm.style.display = 'none'
+  //   }
+  // })
+
+
+
+
+
+
+
+
+
+
+
+
 
 // let htmlStr = ''
 //       for (i in trainer) {
