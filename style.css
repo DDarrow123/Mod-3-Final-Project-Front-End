@@ -23,6 +23,7 @@
   box-shadow: 10px 10px grey;
   padding: 10px;
   border-radius: 10px;
+  perspective: 1000px;
 }
 
 .image-rendered {

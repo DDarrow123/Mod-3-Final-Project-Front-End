@@ -3,22 +3,19 @@ let card = []
 let collectionsContainer = document.querySelector('#collections-container')
 let cardContainer = document.querySelector('#card-container')
 let firstCardContainer = document.querySelector('#first-container')
+let signUpForm = document.querySelector('#sign-up-form')
 let addCommentForm = false
 let postComment = []
+let userId;
 
 //fetching links
 const cardUrl = `http://localhost:3000/api/v1/cards`
 const collectionUrl = `http://localhost:3000/api/v1/collections`
 const commentUrl = `http://localhost:3000/api/v1/comments`
 const userUrl = `http://localhost:3000/api/v1/users`
+const userNameUrl = `http://localhost:3000/api/v1/users/signin`
 
-fetch(collectionUrl)
-.then(res => res.json())
-.then((parsedResponse) => {
-  // console.log(parsedResponse)
-  collections = parsedResponse
-  addCollectionsToDom(collections)
-})
+
 
 function addCollectionsToDom(collections){
 collections.forEach((collection) =>{
@@ -27,7 +24,8 @@ collections.forEach((collection) =>{
 }  //end of func
 
 function singleCollectionToPage(collection){
-  return `<div class="collection-header" data-id=${collection.id}>Collection
+  return `<div class="collection-header" data-id=${collection.id}>
+    Collection
     <h2 class="collection-designer">Designer: ${collection.designer}</h2>
     <h3 class="collection-season">Season: ${collection.season}</h3>
     <h4 class="collection-brand">Brand: ${collection.brand}</h4>
@@ -45,13 +43,14 @@ collectionsContainer.addEventListener('click', (event) => {
     .then(res => res.json())
     .then((parsedResponse) => {
       card = parsedResponse
-      console.log(parsedResponse)
+      // debugger
+
     cardContainer.innerHTML =
-      `<div class="card" data-id="${card.id}">
+      `<div class="card" data-id="${card.id}" ontouchstart="this.classList.toggle('hover');>
         <img class="image-rendered" src="${card.image}" alt="fashion look image">
         <p>${card.details}</p>
         <h4 data-id="${card.id}" class="likes">Likes: ${card.likes}</h4>
-        <span data-id=${card.collection_id}>Test</span>
+        <span data-id=${card.collection_id}></span>
         <div>
         <button type="button" name="comment-button" class="comment-button">Leave a Comment</button>
         </div>
@@ -69,7 +68,17 @@ collectionsContainer.addEventListener('click', (event) => {
       <div class="comment-box">
       </div>
       `
-     // })
+    let appendedCommentDiv =   event.target.parentElement.parentElement.parentElement.querySelector('.comment-box')
+
+    let singleComment = card.comments.forEach((comment) => {
+      appendedCommentDiv.innerHTML +=
+      `<div>
+      <div data-id="${comment.id}" class="comment_id">${comment.content}</div>
+      <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${comment.id}>
+      </div>
+      `      // card.id ==
+      })
+
    })
   }
 })
@@ -94,9 +103,11 @@ collectionsContainer.addEventListener('click', (event) => {
       //card is the original JSON data that is saved in an array assigned to this global variable card
         card.likes = postedLikes
     })
-  } else if (event.target.className === 'comment-button'){
-    commentForm = event.target.parentElement.parentElement.parentElement.querySelector('.card-form-container')
-    toggleCommentForm()
+    } else if (event.target.className === 'comment-button'){
+      commentForm = event.target.parentElement.parentElement.parentElement.querySelector('.card-form-container')
+      toggleCommentForm()
+    } else {
+      deleteCommentFromForm()
     }
  })
 
@@ -116,7 +127,6 @@ collectionsContainer.addEventListener('click', (event) => {
   let submitCommentButton = commentForm.querySelector('#submit-comment')
   let cardDiv = event.target.parentElement.parentElement.parentElement.querySelector('.comment-box')
    //end variables//
-   // debugger
    fetch(commentUrl, {
      method: 'POST',
      headers:
@@ -126,57 +136,70 @@ collectionsContainer.addEventListener('click', (event) => {
         body: JSON.stringify({
           "content": userInput,
           "card_id": commentCardId,
-          "user_id": 1
+          "user_id": userId
         })
    })
    .then(res => res.json())
    .then((parsedResponse) => {
+      //just the single card comes back
      postComment = parsedResponse
-     cardDiv.innerHTML =
-     `<div>${postComment.content}</div>`
+     // console.log(postComment)
+     cardDiv.innerHTML +=
+     `<div data-id=${postComment.id}>${postComment.content}</div>`
+
    })
  })//end comment form event listener
-
 } else {
    commentForm.style.display = 'none'
    }
  } // end of func
 
+ function deleteCommentFromForm(){
+   let createdCommentId = event.target.parentElement.querySelector('.comment_id').dataset.id
+   let removedComment = event.target
+     fetch(commentUrl + `/${createdCommentId}`, {
+       method: 'DELETE',
+       headers:
+       {
+         "Content-Type": "application/json; charset=utf-8"
+        }
+     })
+     .then(res => res.json())
+     .then((parsedResponse) => {
+       removedComment.parentElement.remove()
+       console.log(parsedResponse)
+     })
+   // }
+   // let deletedComment =
+   // let cardDiv = event.target.parentElement.parentElement.parentElement.querySelector()
+   // debugger
+ }
 
+signUpForm.addEventListener('submit', (event)=> {
+  event.preventDefault()
+  let signUp = event.target.id
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// let htmlStr = ''
-//       for (i in trainer) {
-//           htmlStr += `<div class="card" data-id="${i}">
-//           <p>${trainer[i].name}</p>
-//           <button id="add-pokemon-button" data-trainer-id="${trainer[i].id}">Add Pokemon</button>
-//             <ul id="list-container">`
-//         for (j in trainer[i].pokemons) {
-//           htmlStr += `<li>${trainer[i].pokemons[j].nickname} (${trainer[i].pokemons[j].species}) <button class="release" data-pokemon-id="${trainer[i].pokemons[j].id}">Release</button></li>`
-//         }
-//         htmlStr += `
-//           </ul>
-//         </div>`
-
-
-
-
-
-
-
+  let userNameInput = event.target[0].value
+  // console.log(userNameInput)
+  fetch(userNameUrl + `/${userNameInput}`,{
+    })
+  .then(res => res.json())
+  .then((parsedResponse) => {
+    if (parsedResponse){
+      userId = parsedResponse.id
+      signUpForm.remove()
+      fetch(collectionUrl)
+      .then(res => res.json())
+      .then((parsedResponse) => {
+        console.log(parsedResponse)
+        collections = parsedResponse
+        addCollectionsToDom(collections)
+      })
+    } else {
+      alert('Username does not exist!')
+    }
+  })
+}) //end event listener
 
 
 
