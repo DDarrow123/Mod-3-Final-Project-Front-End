@@ -1,5 +1,5 @@
 let collections = []
-let card = []
+let collectionCards = []
 let collectionsContainer = document.querySelector('#collections-container')
 let cardContainer = document.querySelector('#card-container')
 let firstCardContainer = document.querySelector('#first-container')
@@ -34,26 +34,25 @@ function singleCollectionToPage(collection){
 }
 
 collectionsContainer.addEventListener('click', (event) => {
-
   let collectionId = event.target.dataset.id
   // console.log(event.target.dataset.id)
   if (event.target.className === 'collection-header'){
-    fetch(cardUrl + `/${collectionId}`)
+    fetch(collectionUrl + `/${collectionId}`)
     .then(res => res.json())
     .then((parsedResponse) => {
-      card = parsedResponse
-      // debugger
-
-    cardContainer.innerHTML =
+      collectionCards = parsedResponse
+      cardContainer.innerHTML = ''
+      collectionCards.cards.forEach((card) => {
+    // debugger
+      cardContainer.innerHTML +=
       `<div class="individual-card" data-id="${card.id}">
         <div class="flip-box">
          <div class="flip-box-inner">
           <div class="flip-box-front">
            <img class="image-rendered" src="${card.image}" alt="fashion look image">
            </div>
-             <div class="flip-box-back">
-              <h2>${card.details}</h2>
-               <p>What an amazing city</p>
+           <div class="flip-box-back">
+            <h2>${card.details}</h2>
         </div>
       </div>
       </div>
@@ -72,20 +71,20 @@ collectionsContainer.addEventListener('click', (event) => {
         </form>
       </div>
 
-
       <div class="comment-box">
       </div>
       `
-    let appendedCommentDiv =   event.target.parentElement.parentElement.parentElement.querySelector('.comment-box')
-
-    let singleComment = card.comments.forEach((comment) => {
-      appendedCommentDiv.innerHTML +=
-      `<div>
-      <div data-id="${comment.id}" class="comment_id">${comment.content}</div>
-      <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${comment.id}>
-      </div>
-      `      // card.id ==
-      })
+  })
+  // let appendedCommentDiv =   event.target.parentElement.parentElement.parentElement.querySelector('.comment-box')
+  //
+  //   let singleComment = card.comments.forEach((comment) => {
+  //     appendedCommentDiv.innerHTML +=
+  //     `<div>
+  //     <div data-id="${comment.id}" class="comment_id">${comment.content}</div>
+  //     <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${comment.id}>
+  //     </div>
+  //     `
+  //     })
 
    })
   }
