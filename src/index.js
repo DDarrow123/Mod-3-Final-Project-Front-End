@@ -16,7 +16,6 @@ const userUrl = `http://localhost:3000/api/v1/users`
 const userNameUrl = `http://localhost:3000/api/v1/users/signin`
 
 
-
 function addCollectionsToDom(collections){
 collections.forEach((collection) =>{
   collectionsContainer.innerHTML += singleCollectionToPage(collection)
@@ -46,9 +45,18 @@ collectionsContainer.addEventListener('click', (event) => {
       // debugger
 
     cardContainer.innerHTML =
-      `<div class="card" data-id="${card.id}" ontouchstart="this.classList.toggle('hover');>
-        <img class="image-rendered" src="${card.image}" alt="fashion look image">
-        <p>${card.details}</p>
+      `<div class="individual-card" data-id="${card.id}">
+        <div class="flip-box">
+         <div class="flip-box-inner">
+          <div class="flip-box-front">
+           <img class="image-rendered" src="${card.image}" alt="fashion look image">
+           </div>
+             <div class="flip-box-back">
+              <h2>${card.details}</h2>
+               <p>What an amazing city</p>
+        </div>
+      </div>
+      </div>
         <h4 data-id="${card.id}" class="likes">Likes: ${card.likes}</h4>
         <span data-id=${card.collection_id}></span>
         <div>
@@ -106,7 +114,7 @@ collectionsContainer.addEventListener('click', (event) => {
     } else if (event.target.className === 'comment-button'){
       commentForm = event.target.parentElement.parentElement.parentElement.querySelector('.card-form-container')
       toggleCommentForm()
-    } else {
+    } else if (event.target.id === 'delete-comment') {
       deleteCommentFromForm()
     }
  })
@@ -154,6 +162,7 @@ collectionsContainer.addEventListener('click', (event) => {
    }
  } // end of func
 
+
  function deleteCommentFromForm(){
    let createdCommentId = event.target.parentElement.querySelector('.comment_id').dataset.id
    let removedComment = event.target
@@ -168,18 +177,15 @@ collectionsContainer.addEventListener('click', (event) => {
      .then((parsedResponse) => {
        removedComment.parentElement.remove()
        console.log(parsedResponse)
-     })
-   // }
-   // let deletedComment =
-   // let cardDiv = event.target.parentElement.parentElement.parentElement.querySelector()
-   // debugger
- }
+    })
+  }
 
 signUpForm.addEventListener('submit', (event)=> {
   event.preventDefault()
   let signUp = event.target.id
-
   let userNameInput = event.target[0].value
+  let submitUserInfoBtn = event.target.querySelector('#submit-user-info').id
+  if (submitUserInfoBtn === 'submit-user-info'){
   // console.log(userNameInput)
   fetch(userNameUrl + `/${userNameInput}`,{
     })
@@ -197,8 +203,9 @@ signUpForm.addEventListener('submit', (event)=> {
       })
     } else {
       alert('Username does not exist!')
-    }
-  })
+     }
+   })
+ } //end of first if statement
 }) //end event listener
 
 
