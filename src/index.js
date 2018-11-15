@@ -74,17 +74,18 @@ collectionsContainer.addEventListener('click', (event) => {
       <div class="comment-box">
       </div>
       `
+      let appendedCommentDiv =   event.target.parentElement.parentElement.parentElement.querySelector('.comment-box')
+          console.log(collectionCards.cards)
+        let singleComment = card.comments.forEach((comment) => {
+          appendedCommentDiv.innerHTML +=
+          `<div>
+          <div data-id="${comment.id}" class="comment_id">${comment.content}</div>
+          <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${comment.id}>
+          </div>
+          `
+          })
   })
-  // let appendedCommentDiv =   event.target.parentElement.parentElement.parentElement.querySelector('.comment-box')
-  //
-  //   let singleComment = card.comments.forEach((comment) => {
-  //     appendedCommentDiv.innerHTML +=
-  //     `<div>
-  //     <div data-id="${comment.id}" class="comment_id">${comment.content}</div>
-  //     <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${comment.id}>
-  //     </div>
-  //     `
-  //     })
+
 
    })
   }
@@ -152,7 +153,9 @@ collectionsContainer.addEventListener('click', (event) => {
      postComment = parsedResponse
      // console.log(postComment)
      cardDiv.innerHTML +=
-     `<div data-id=${postComment.id}>${postComment.content}</div>`
+     `<div>  <div data-id="${postComment.id}" class="comment_id">${postComment.content}</div>
+     <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${postComment.id}>
+     </div></div>`
 
    })
  })//end comment form event listener
@@ -164,6 +167,7 @@ collectionsContainer.addEventListener('click', (event) => {
 
  function deleteCommentFromForm(){
    let createdCommentId = event.target.parentElement.querySelector('.comment_id').dataset.id
+   debugger
    let removedComment = event.target
      fetch(commentUrl + `/${createdCommentId}`, {
        method: 'DELETE',
@@ -175,7 +179,7 @@ collectionsContainer.addEventListener('click', (event) => {
      .then(res => res.json())
      .then((parsedResponse) => {
        removedComment.parentElement.remove()
-       console.log(parsedResponse)
+       // console.log(parsedResponse)
     })
   }
 
@@ -196,7 +200,7 @@ signUpForm.addEventListener('submit', (event)=> {
       fetch(collectionUrl)
       .then(res => res.json())
       .then((parsedResponse) => {
-        console.log(parsedResponse)
+        // console.log(parsedResponse)
         collections = parsedResponse
         addCollectionsToDom(collections)
       })
