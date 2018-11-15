@@ -25,9 +25,9 @@ collections.forEach((collection) =>{
 function singleCollectionToPage(collection){
   return `<div class="collection-header" data-id=${collection.id}>
     Collection
-    <h2 class="collection-designer">Designer: ${collection.designer}</h2>
+    <h2 class="collection-designer"> ${collection.designer}</h2>
     <h3 class="collection-season">Season: ${collection.season}</h3>
-    <h4 class="collection-brand">Brand: ${collection.brand}</h4>
+    <h4 class="collection-brand">${collection.brand}</h4>
     <div></div>
   </div>`
   // if ()
@@ -57,10 +57,10 @@ collectionsContainer.addEventListener('click', (event) => {
         </div>
       </div>
       </div>
-        <h4 data-id="${card.id}" class="likes">Likes: ${card.likes}</h4>
+        <h4 data-id="${card.id}" class="likes">LIKES: ${card.likes}</h4>
         <span data-id=${card.collection_id}></span>
         <div>
-        <button type="button" name="comment-button" class="comment-button">Leave a Comment</button>
+        <button type="button" name="comment-button" class="comment-button">COMMENT</button>
         </div>
 
       <div class="card-form-container">

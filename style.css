@@ -1,46 +1,36 @@
+/* .container{
+  width:auto;
+} */
+
 #create-user {
   text-align: center;
 }
 
 #card-container {
   display: flex;
-  /* grid-template-columns: 1fr;
-  grid-template-rows: auto;
-  grid-gap: 40px; */
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* width: 100%; */
+  /* grid-template-columns: 1fr; */
+  /* grid-template-rows: auto;
+  grid-gap: 40px; */ */ */
   padding-top: 20px;
   padding-bottom: 30px;
 }
 
 #collections-container {
   display: flex;
-}
-
-
-.individual-card{
-  background-color: #eeeeee;
-  height: auto;
-  width: 400px;
-  box-shadow: 10px 10px grey;
-  padding: 10px;
-  border-radius: 10px;
-  perspective: 1000px;
+  width: 100%;
 }
 
 .image-rendered {
   padding-top: 20px;
-  padding-left: 60px;
+  padding-left: 30px;
   /* text-align: center; */
   height: 400px;
   width: 275px;
-
-}
-
-.collection-header {
-  margin: 10px;
-}
-
-.comment-button {
-  margin-top: 10px;
+  border-radius: 5px;
 }
 
 .card-form-container {
@@ -59,6 +49,8 @@
 
 .comment-box{
   margin-left: 20px;
+  border: 2px solid grey;
+  border-radius: 10px;
 }
 
 /* The flip box container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
@@ -170,9 +162,67 @@ body{
   width:100%;
   transition:800ms ease all;
 }
+/*END BUTTON STYLING */
 
 .input-username{
   margin-top: 40px;
   margin-bottom: 30px;
   border-radius: 10px;
+}
+
+.collection-header {
+font-family: 'Allerta Stencil', sans-serif;
+margin: 10px;
+width: 25%;
+}
+
+
+.collection-season{
+  font-size: 30px;
+  background-color: #7b7484;
+  border-radius: 5px;
+}
+
+/*CARD STYLING*/
+.likes{
+  font-family: 'Allerta Stencil', sans-serif;
+  background-color: grey;
+  border-radius: 5px;
+  margin-right: 40px;
+  margin-left: 40px;
+}
+
+.comment-button {
+font-family: 'Allerta Stencil', sans-serif;
+height: 50px;
+border-radius: 10px;
+margin-bottom: 20px;
+}
+
+.delete-comment{
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.comment_id {
+  font-family: 'PT Sans', sans-serif;
+  border-radius: 5px;
+  border: 5px solid grey;
+  background-color: grey;
+  margin-right: 20%;
+  margin-left: 20%;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  background-color: #7b7484;
+}
+
+.individual-card{
+  background-color: #eeeeee;
+  height: auto;
+  width: 400px;
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 10px;
+  perspective: 1000px;
+  margin: 10px;
 }
