@@ -29,8 +29,7 @@ function singleCollectionToPage(collection){
     <h3 class="collection-season">Season: ${collection.season}</h3>
     <h4 class="collection-brand">${collection.brand}</h4>
     <div></div>
-  </div>`
-  // if ()
+   </div>`
 }
 
 collectionsContainer.addEventListener('click', (event) => {
@@ -44,7 +43,6 @@ collectionsContainer.addEventListener('click', (event) => {
       cardContainer.innerHTML = ''
       let htmlStr = ''
       collectionCards.cards.forEach((card) => {
-    // debugger
       htmlStr +=
       `<div class="individual-card" data-id="${card.id}">
         <div class="flip-box">
@@ -52,16 +50,16 @@ collectionsContainer.addEventListener('click', (event) => {
           <div class="flip-box-front">
            <img class="image-rendered" src="${card.image}" alt="fashion look image">
            </div>
-           <div class="flip-box-back">
+            <div class="flip-box-back">
             <h2 class="card-collection-detail text-shadow-pop-bl">${card.details}</h2>
+          </div>
         </div>
       </div>
-      </div>
-        <h4 data-id="${card.id}" class="likes">LIKES: ${card.likes}</h4>
+      <h4 data-id="${card.id}" class="likes">LIKES: ${card.likes}</h4>
         <span data-id=${card.collection_id}></span>
         <div>
         <button type="button" name="comment-button" class="comment-button">COMMENT</button>
-        </div>
+      </div>
 
       <div class="card-form-container">
         <form class="add-comment-form">
@@ -71,109 +69,102 @@ collectionsContainer.addEventListener('click', (event) => {
           <input type="submit" id="submit-comment" name="submit" value="Create New Comment" class="submit">
         </form>
       </div>
+     <div class="comment-box">`
 
-      <div class="comment-box">`
-
-      card.comments.forEach((comment) => {
-        htmlStr +=
-        `<div>
-        <div data-id="${comment.id}" class="comment_id">${comment.content}</div>
-        <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${comment.id}>
-        </div>
-        `
-        })
-
-      htmlStr += `</div></div>`
-
-
-  })
-cardContainer.innerHTML = htmlStr
-
+  card.comments.forEach((comment) => {
+    htmlStr +=
+    `<div>
+      <div data-id="${comment.id}" class="comment_id">${comment.content}
+      </div>
+      <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${comment.id}>
+    </div>
+    `
+    })
+   htmlStr += `</div></div>`
    })
-  }
+cardContainer.innerHTML = htmlStr
+  })
+ }
 })
 
-  cardContainer.addEventListener('click', (event) => {
-    let likeId = event.target.dataset.id
+cardContainer.addEventListener('click', (event) => {
+  let likeId = event.target.dataset.id
   if (event.target.className === 'likes'){
     let cardToUpdate = collectionCards.cards.find(card => (card.id == likeId))
     if (cardToUpdate.likes == null) {
-      cardToUpdate.likes = 0
+    cardToUpdate.likes = 0
     }
-    let postedLikes = cardToUpdate.likes + 1
-    console.log(collectionCards)
-    fetch(cardUrl + `/${likeId}`, {
-      method: 'PATCH',
-      headers:
-        {
-          "Content-Type": "application/json; charset=utf-8"
-         },
-      body: JSON.stringify({
-        "likes" :postedLikes
-      })
+  let postedLikes = cardToUpdate.likes + 1
+  fetch(cardUrl + `/${likeId}`, {
+    method: 'PATCH',
+    headers:
+      {
+        "Content-Type": "application/json; charset=utf-8"
+       },
+    body: JSON.stringify({
+      "likes" :postedLikes
     })
-    .then(res => res.json())
-    .then((parsedResponse) => {
-      event.target.parentElement.querySelector('.likes').innerHTML = "Likes: " + postedLikes
-      //card is the original JSON data that is saved in an array assigned to this global variable card
-        cardToUpdate.likes = postedLikes
+  })
+  .then(res => res.json())
+  .then((parsedResponse) => {
+    event.target.parentElement.querySelector('.likes').innerHTML = "Likes: " + postedLikes
+    //card is the original JSON data that is saved in an array assigned to this global variable card
+    cardToUpdate.likes = postedLikes
     })
     } else if (event.target.className === 'comment-button'){
-      commentForm = event.target.parentElement.parentElement.querySelector('.card-form-container')
-      toggleCommentForm()
+    commentForm = event.target.parentElement.parentElement.querySelector('.card-form-container')
+    toggleCommentForm()
     } else if (event.target.id === 'delete-comment') {
-      deleteCommentFromForm()
-    }
- })
+    deleteCommentFromForm()
+   }
+})
 
-   function toggleCommentForm(){
-   let clickedButton = event.target.className
-   // console.log(addCommentForm)
-   addCommentForm = !addCommentForm
-   // console.log(addCommentForm)
+ function toggleCommentForm(){
+ let clickedButton = event.target.className
+  addCommentForm = !addCommentForm
   if (addCommentForm) {
-   commentForm.style.display = 'block'
+    commentForm.style.display = 'block'
 
   commentForm.addEventListener('submit', (event) => {
-    // debugger
-    event.preventDefault()
-    //variables//
+  event.preventDefault()
+  //variables//
   let commentCardId = event.target.querySelector('#input_comment').dataset.id
   let userInput = event.target.querySelector('#input_comment').value
   let submitCommentButton = commentForm.querySelector('#submit-comment')
   let cardDiv = event.target.parentElement.parentElement.querySelector('.comment-box')
-   //end variables//
-   fetch(commentUrl, {
-     method: 'POST',
-     headers:
-       {
-         "Content-Type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify({
-          "content": userInput,
-          "card_id": commentCardId,
-          "user_id": userId
-        })
-   })
-   .then(res => res.json())
-   .then((parsedResponse) => {
-      //just the single card comes back
-     postComment = parsedResponse
-      commentForm.style.display = 'none'
-      addCommentForm = false
-     // console.log(postComment)
-     cardDiv.innerHTML +=
-     `<div>  <div data-id="${postComment.id}" class="comment_id">${postComment.content}</div>
-     <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${postComment.id}>
-     </div></div>`
-
-   })
- })//end comment form event listener
-} else {
+ //end variables//
+ fetch(commentUrl, {
+   method: 'POST',
+   headers:
+     {
+       "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        "content": userInput,
+        "card_id": commentCardId,
+        "user_id": userId
+      })
+  })
+ .then(res => res.json())
+ .then((parsedResponse) => {
+    //just the single card comes back
+   postComment = parsedResponse
    commentForm.style.display = 'none'
-   }
- } // end of func
-
+   addCommentForm = false
+   // console.log(postComment)
+   cardDiv.innerHTML +=
+   `<div>
+     <div data-id="${postComment.id}" class="comment_id">${postComment.content}
+     </div>
+     <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${postComment.id}>
+     </div>
+   </div>`
+ })
+ })//end comment form event listener
+ } else {
+ commentForm.style.display = 'none'
+ }
+}
 
  function deleteCommentFromForm(){
    let createdCommentId = event.target.parentElement.querySelector('.comment_id').dataset.id
@@ -181,25 +172,22 @@ cardContainer.innerHTML = htmlStr
      fetch(commentUrl + `/${createdCommentId}`, {
        method: 'DELETE',
        headers:
-       {
-         "Content-Type": "application/json; charset=utf-8"
-        }
+         {
+           "Content-Type": "application/json; charset=utf-8"
+          }
      })
      .then(res => res.json())
      .then((parsedResponse) => {
        removedComment.parentElement.remove()
-       // console.log(parsedResponse)
     })
   }
 
 signUpForm.addEventListener('submit', (event)=> {
-  // debugger
   event.preventDefault()
   let signUp = event.target.id
   let userNameInput = event.target[0].value
   let submitUserInfoBtn = event.target.querySelector('#submit-user-info').id
   if (submitUserInfoBtn === 'submit-user-info'){
-  // console.log(userNameInput)
   fetch(userNameUrl + `/${userNameInput}`,{
     })
   .then(res => res.json())
@@ -210,7 +198,6 @@ signUpForm.addEventListener('submit', (event)=> {
       fetch(collectionUrl)
       .then(res => res.json())
       .then((parsedResponse) => {
-        // console.log(parsedResponse)
         collections = parsedResponse
         addCollectionsToDom(collections)
       })
@@ -218,16 +205,5 @@ signUpForm.addEventListener('submit', (event)=> {
       alert('Username does not exist!')
      }
    })
- } //end of first if statement
+  } //end of first if statement
 }) //end event listener
-
-
-
-
-
-
-
-
-
-
-// spacing
