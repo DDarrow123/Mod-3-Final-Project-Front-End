@@ -95,15 +95,15 @@
 
 /* Style the back side */
 .flip-box-back {
-  background-color: dodgerblue;
+  background-color: white;
   color: white;
   transform: rotateY(180deg);
   border-radius: 10px;
 }
 
 #sign-up-form {
-  background-color: #6396e8;
-  height: 100px;
+  background-image: url("images/Rodarte_Index.jpg");
+  height: 800px;
 }
 
 /* .sign-in {
@@ -126,12 +126,13 @@ body{
 }
 
 .submitted-user{
+  font-family: 'Allerta Stencil', sans-serif;
   background:#1AAB8A;
   color:#fff;
   border:none;
   position:relative;
   height:40px;
-  font-size:1.6em;
+  font-size: 20px;
   padding:0 2em;
   cursor:pointer;
   transition:800ms ease all;
@@ -168,6 +169,7 @@ body{
   margin-top: 40px;
   margin-bottom: 30px;
   border-radius: 10px;
+  padding: 20px;
 }
 
 .collection-header {
@@ -225,4 +227,11 @@ margin-bottom: 20px;
   border-radius: 10px;
   perspective: 1000px;
   margin: 10px;
+}
+
+.card-collection-detail {
+  font-family: 'Allerta Stencil', sans-serif;
+  background-color: #7b7484;
+  color: black;
+  font-size: 30px;
 }

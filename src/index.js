@@ -53,7 +53,7 @@ collectionsContainer.addEventListener('click', (event) => {
            <img class="image-rendered" src="${card.image}" alt="fashion look image">
            </div>
            <div class="flip-box-back">
-            <h2>${card.details}</h2>
+            <h2 class="card-collection-detail">${card.details}</h2>
         </div>
       </div>
       </div>
