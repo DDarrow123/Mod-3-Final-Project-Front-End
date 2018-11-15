@@ -108,3 +108,71 @@
   transform: rotateY(180deg);
   border-radius: 10px;
 }
+
+#sign-up-form {
+  background-color: #6396e8;
+  height: 100px;
+}
+
+/* .sign-in {
+text-align: center;
+} */
+
+html,body{
+  height:100%;
+}
+
+/* Button styling*/
+body{
+  text-align:center;
+}
+.submitted-user:before{
+  content:'';
+  height:100%;
+  display:inline-block;
+  vertical-align:middle;
+}
+
+.submitted-user{
+  background:#1AAB8A;
+  color:#fff;
+  border:none;
+  position:relative;
+  height:40px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+  border-radius: 10px;
+}
+.submitted-user:hover{
+  background:#fff;
+  color:#1AAB8A;
+}
+.submitted-user:before,.submitted-user:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #1AAB8A;
+  transition:400ms ease all;
+}
+.submitted-user:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.submitted-user:hover:before,.submitted-user:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+
+.input-username{
+  margin-top: 40px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+}

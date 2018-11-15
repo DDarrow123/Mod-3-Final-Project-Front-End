@@ -42,9 +42,10 @@ collectionsContainer.addEventListener('click', (event) => {
     .then((parsedResponse) => {
       collectionCards = parsedResponse
       cardContainer.innerHTML = ''
+      let htmlStr = ''
       collectionCards.cards.forEach((card) => {
     // debugger
-      cardContainer.innerHTML +=
+      htmlStr +=
       `<div class="individual-card" data-id="${card.id}">
         <div class="flip-box">
          <div class="flip-box-inner">
@@ -71,21 +72,22 @@ collectionsContainer.addEventListener('click', (event) => {
         </form>
       </div>
 
-      <div class="comment-box">
-      </div>
-      `
-      let appendedCommentDiv =   event.target.parentElement.parentElement.parentElement.querySelector('.comment-box')
-          console.log(collectionCards.cards)
-        let singleComment = card.comments.forEach((comment) => {
-          appendedCommentDiv.innerHTML +=
-          `<div>
-          <div data-id="${comment.id}" class="comment_id">${comment.content}</div>
-          <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${comment.id}>
-          </div>
-          `
-          })
-  })
+      <div class="comment-box">`
 
+      card.comments.forEach((comment) => {
+        htmlStr +=
+        `<div>
+        <div data-id="${comment.id}" class="comment_id">${comment.content}</div>
+        <input type="submit" id="delete-comment" name="delete" value="Delete" class="submit" data-id=${comment.id}>
+        </div>
+        `
+        })
+
+      htmlStr += `</div></div>`
+
+
+  })
+cardContainer.innerHTML = htmlStr
 
    })
   }
@@ -117,7 +119,7 @@ collectionsContainer.addEventListener('click', (event) => {
         cardToUpdate.likes = postedLikes
     })
     } else if (event.target.className === 'comment-button'){
-      commentForm = event.target.parentElement.parentElement.parentElement.querySelector('.card-form-container')
+      commentForm = event.target.parentElement.parentElement.querySelector('.card-form-container')
       toggleCommentForm()
     } else if (event.target.id === 'delete-comment') {
       deleteCommentFromForm()
@@ -133,12 +135,13 @@ collectionsContainer.addEventListener('click', (event) => {
    commentForm.style.display = 'block'
 
   commentForm.addEventListener('submit', (event) => {
+    // debugger
     event.preventDefault()
     //variables//
   let commentCardId = event.target.querySelector('#input_comment').dataset.id
   let userInput = event.target.querySelector('#input_comment').value
   let submitCommentButton = commentForm.querySelector('#submit-comment')
-  let cardDiv = event.target.parentElement.parentElement.parentElement.querySelector('.comment-box')
+  let cardDiv = event.target.parentElement.parentElement.querySelector('.comment-box')
    //end variables//
    fetch(commentUrl, {
      method: 'POST',
@@ -156,6 +159,8 @@ collectionsContainer.addEventListener('click', (event) => {
    .then((parsedResponse) => {
       //just the single card comes back
      postComment = parsedResponse
+      commentForm.style.display = 'none'
+      addCommentForm = false
      // console.log(postComment)
      cardDiv.innerHTML +=
      `<div>  <div data-id="${postComment.id}" class="comment_id">${postComment.content}</div>
@@ -172,7 +177,6 @@ collectionsContainer.addEventListener('click', (event) => {
 
  function deleteCommentFromForm(){
    let createdCommentId = event.target.parentElement.querySelector('.comment_id').dataset.id
-   debugger
    let removedComment = event.target
      fetch(commentUrl + `/${createdCommentId}`, {
        method: 'DELETE',
