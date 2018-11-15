@@ -53,7 +53,7 @@ collectionsContainer.addEventListener('click', (event) => {
            <img class="image-rendered" src="${card.image}" alt="fashion look image">
            </div>
            <div class="flip-box-back">
-            <h2 class="card-collection-detail">${card.details}</h2>
+            <h2 class="card-collection-detail text-shadow-pop-bl">${card.details}</h2>
         </div>
       </div>
       </div>
@@ -65,7 +65,7 @@ collectionsContainer.addEventListener('click', (event) => {
 
       <div class="card-form-container">
         <form class="add-comment-form">
-          <h3>Add a comment!</h3>
+          <h3 class="add-a-comment-title">ADD A COMMENT!</h3>
           <input id="input_comment" type="text" name="comment" value="" placeholder="Enter a comment about this look..." class="input-text"  data-id="${card.id}">
           <br>
           <input type="submit" id="submit-comment" name="submit" value="Create New Comment" class="submit">
@@ -193,6 +193,7 @@ cardContainer.innerHTML = htmlStr
   }
 
 signUpForm.addEventListener('submit', (event)=> {
+  // debugger
   event.preventDefault()
   let signUp = event.target.id
   let userNameInput = event.target[0].value
