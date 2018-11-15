@@ -94,7 +94,12 @@ collectionsContainer.addEventListener('click', (event) => {
   cardContainer.addEventListener('click', (event) => {
     let likeId = event.target.dataset.id
   if (event.target.className === 'likes'){
-    let postedLikes = card.likes + 1
+    let cardToUpdate = collectionCards.cards.find(card => (card.id == likeId))
+    if (cardToUpdate.likes == null) {
+      cardToUpdate.likes = 0
+    }
+    let postedLikes = cardToUpdate.likes + 1
+    console.log(collectionCards)
     fetch(cardUrl + `/${likeId}`, {
       method: 'PATCH',
       headers:
@@ -109,7 +114,7 @@ collectionsContainer.addEventListener('click', (event) => {
     .then((parsedResponse) => {
       event.target.parentElement.querySelector('.likes').innerHTML = "Likes: " + postedLikes
       //card is the original JSON data that is saved in an array assigned to this global variable card
-        card.likes = postedLikes
+        cardToUpdate.likes = postedLikes
     })
     } else if (event.target.className === 'comment-button'){
       commentForm = event.target.parentElement.parentElement.parentElement.querySelector('.card-form-container')
