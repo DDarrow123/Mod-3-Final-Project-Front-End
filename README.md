@@ -18,4 +18,6 @@ Once here, type `open index.hmtl` to see the application launch locally. You sho
 
 Feel free to log in as a returning user in order to access the application (please reference the seed data file in the backend to retreive a username)
 
+Please find the link to the backend of the application located here: https://github.com/DDarrow123/Mod-3-Final-Project
+
 Enjoy!!
