@@ -16,6 +16,8 @@ Download this repo to your local computer selecting the appropriate folder that 
 
 Once here, type `open index.hmtl` to see the application launch locally. You should be ready to explore the app as you please.
 
-Feel free to log in as a returning user FIRST in order to access the application (please reference the seed data file in the backend to retreive an username)
+Feel free to log in as a returning user in order to access the application (please reference the seed data file in the backend to retreive a username)
+
+Please find the link to the backend of the application located here: https://github.com/DDarrow123/Mod-3-Final-Project
 
 Enjoy!!
